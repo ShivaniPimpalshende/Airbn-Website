@@ -32,7 +32,8 @@ let listingSchema=new Schema({
      coordinates: {
       type: [Number],
       required: true
-     }
+     },
+   //   category:Number,
    }
 });
 
