@@ -33,9 +33,11 @@ let listingSchema=new Schema({
       type: [Number],
       required: true
      },
-   //   category:Number,
-   }
-});
+   
+   },
+   
+}
+);
 
 listingSchema.post("findOneAndDelete",async(listing)=>{
    if(listing){
