@@ -1,0 +1,115 @@
+<style>
+  .search-btn{
+    background-color: #fe424d;
+    color: white;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+  }
+  .search-btn:hover{
+    background-color: hsl(356, 99%, 63%);
+    color: white;
+  }
+  .search-btn i{
+    display: inline;
+    margin-right: 0.5rem;
+  }
+  .search-inp{
+    border-radius: 25px;
+    padding:0.5rem 3rem 0.5rem 3rem;
+    font-size: 1rem;
+  }
+</style>
+
+<nav class="navbar navbar-expand-md bg-body-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="/listings">Explore</a>
+          </div>
+         <div class="navbar-nav ms-auto">
+          <form class="d-flex" role="search">
+            <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations" >
+            <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+          </form>
+         </div>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="/listings/new">Airbnb your Home</a>
+          <% if(!currUser) {%> 
+          <a class="nav-link a"  href="/signup"><b>SignIn</b></a>
+          <a class="nav-link" href="/login"><b>LogIn</b></a>
+          <%}%>
+          <% if(currUser) {%> 
+          <a class="nav-link" href="/logout"><b>LogOut</b></a> 
+          <%}%> 
+        </div>
+      </div>
+    </div>
+  </nav>
+  <script>
+    function getUniqueCountries(listings) {
+      const countries = listings.map(listing => listing.country);
+      return [...new Set(countries)];
+  }
+
+  // Function to populate the country dropdown
+  function populateCountryDropdown(countries) {
+      const countryDropdown = document.getElementById('countryDropdown');
+      countries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country;
+          option.textContent = country;
+          countryDropdown.appendChild(option);
+      });
+  }
+
+  // Function to display the listings
+  function displayListings(listings) {
+      const listingsContainer = document.getElementById('listingsContainer');
+      listingsContainer.innerHTML = ''; // Clear previous listings
+      listings.forEach(listing => {
+          const listingDiv = document.createElement('div');
+          listingDiv.innerHTML = `
+              <h2>${listing.title}</h2>
+              <p>${listing.description}</p>
+              <img src="${listing.image.url}" alt="${listing.title}" width="200">
+              <p><strong>Price:</strong> $${listing.price}</p>
+              <p><strong>Location:</strong> ${listing.location}, ${listing.country}</p>
+          `;
+          listingsContainer.appendChild(listingDiv);
+      });
+  }
+
+  // Display all listings initially
+  displayListings(sampleListings);
+
+  // Populate the country dropdown with unique countries
+  const uniqueCountries = getUniqueCountries(sampleListings);
+  populateCountryDropdown(uniqueCountries);
+
+  // Function to filter listings based on search input and selected country
+  function filterListings() {
+      const searchText = document.getElementById('searchInput').value.toLowerCase();
+      const selectedCountry = document.getElementById('countryDropdown').value;
+
+      const filteredListings = sampleListings.filter(listing => {
+          const matchesSearchText = listing.title.toLowerCase().includes(searchText) ||
+              listing.description.toLowerCase().includes(searchText) ||
+              listing.location.toLowerCase().includes(searchText) ||
+              listing.country.toLowerCase().includes(searchText);
+
+          const matchesCountry = selectedCountry ? listing.country === selectedCountry : true;
+
+          return matchesSearchText && matchesCountry;
+      });
+
+      displayListings(filteredListings);
+  }
+
+  // Add event listeners to the search input and country dropdown
+  document.getElementById('searchInput').addEventListener('input', filterListings);
+  document.getElementById('countryDropdown').addEventListener('change', filterListings);
+</script>
