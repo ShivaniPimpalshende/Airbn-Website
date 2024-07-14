@@ -32,6 +32,7 @@ module.exports.showListing= async (req,res)=>{
    
    console.log(listings);
     res.render("./listings/show.ejs",{listings});
+    console.log(listings.owner);
 };
   
  module.exports.createListing = async(req,res)=>{

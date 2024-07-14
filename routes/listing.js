@@ -16,7 +16,9 @@ validateListing,
 wrapAsync(listingController.createListing)); //create Route
 
 //New Route
- router.get("/new", isLoggedIn,listingController.renderNewform);
+ router.get("/new", isLoggedIn,listingController.renderNewform,()=>{
+    console.log(listings)
+ });
     
 router.route("/:id")
 .get(wrapAsync(listingController.showListing))  //show route
