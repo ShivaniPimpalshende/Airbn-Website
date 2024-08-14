@@ -8,6 +8,10 @@ const multer= require("multer");
 const {storage} = require("../clouldConfig.js");
 const upload = multer({storage}); 
 
+router.get("/filter/:id",wrapAsync(listingController.filter));
+router.get("/search", wrapAsync(listingController.search));
+
+
 router.route("/")
 .get(wrapAsync(listingController.index)) //Index Route
 .post(isLoggedIn, 
@@ -27,5 +31,8 @@ router.route("/:id")
 
 //Edit Route
 router.get("/:id/edit", isLoggedIn, isOwner , wrapAsync(listingController.renderEditForm));
+router.get("/search", wrapAsync(listingController.search));
+
+
 
  module.exports=router;
