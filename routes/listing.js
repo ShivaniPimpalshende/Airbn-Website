@@ -21,7 +21,6 @@ wrapAsync(listingController.createListing)); //create Route
 
 //New Route
  router.get("/new", isLoggedIn,listingController.renderNewform,()=>{
-    console.log(listings)
  });
     
 router.route("/:id")
